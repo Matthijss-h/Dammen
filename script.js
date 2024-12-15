@@ -1,3 +1,30 @@
+// List of possible features to implement:
+
+// Theme Selection: Allow players to choose different board themes
+// Board Rotate: Toggle board rotation for 2-player mode
+// Sound Effects: Implement sounds for moves, captures, and background music
+// Piece Move Transitions: Add smooth animations for piece movement and captures
+// Undo Move: Enable the option to undo the last move
+// AI Opponent: Implement an AI opponent for single-player mode
+// Highlight Moves: Highlight possible moves for selected pieces
+// Timer: Add a timer for each player's turn
+// Scoreboard: Display the score and captured pieces
+
+// Spelregels:
+// 1. Hoekveld linksonder = donker vakje, speel op donkere velden.
+// 2. Wit begint altijd.
+// 3. Schijf: 1 vakje schuin vooruit.
+// 4. Schijf kan vooruit en achteruit slaan.
+// 5. Schijf wordt dam bij bereiken overkant, tenzij terug moet slaan.
+// 6. Dam: schuift meerdere vakjes schuin, vooruit/achteruit.
+// 7. Dam kan vooruit/achteruit slaan, hoeft niet direct achter geslagen schijf te staan.
+// 8. Slaan is verplicht.
+// 9. Meerslag (meeste stukken slaan) gaat voor.
+// 10. Bij gelijk aantal slagen (dam/schijf), vrije keuze.
+// 11. Geslagen stukken na slag van bord halen.
+// 12. Geen zet mogelijk = verlies.
+// 13. Niemand kan winnen = remise (ook met ongelijk aantal stukken).
+
 const Board = document.getElementById('board');
 
 function createBoard() {
@@ -56,7 +83,7 @@ showHighlights();
 function movePiece() {
     Board.addEventListener('click', (event) => {
         const square = event.target.closest('.board-square');
-        if (SelectedPiece && square && square.children.length === 0 && square.classList.contains('darkSquare')) {
+        if (SelectedPiece && square.children.length === 0 && square.classList.contains('darkSquare')) {
             const fromSquare = SelectedPiece.parentElement.id;
             const toSquare = square.id;
 
@@ -65,7 +92,9 @@ function movePiece() {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
-                spinBoard();
+                if (stopRotating === false){
+                    spinBoard();
+                }
                 SelectedPiece.style.border = "";
                 SelectedPiece = null;
                 isWhiteTurn = !isWhiteTurn;
@@ -90,6 +119,19 @@ function spinBoard() {
     Board.style.filter = "blur(2px)";
     setTimeout(() => Board.style.filter = "none", 600);
 }
+
+let stopRotating = false;
+function toggleBoardRotation() {
+    document.getElementById('stopRotate').addEventListener('click', () => {
+        stopRotating = !stopRotating;
+        if (!stopRotating) {
+            if ((isWhiteTurn && rotation % 360 !== 0) || (!isWhiteTurn && rotation % 360 === 0)) {
+                spinBoard();
+            }
+        }
+    });
+}
+toggleBoardRotation();
 
 // Kings a piece if it reaches the last row
 function kingPiece() {
