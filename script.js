@@ -1,17 +1,27 @@
 // List of possible features to implement:
 
-// Theme Selection: Allow players to choose different board themes
-// Board Rotate: Toggle board rotation for 2-player mode
-// Sound Effects: Implement sounds for moves, captures, and background music
 // Piece Move Transitions: Add smooth animations for piece movement and captures
 // Undo Move: Enable the option to undo the last move
 // AI Opponent: Implement an AI opponent for single-player mode
-// Highlight Moves: Highlight possible moves for selected pieces
 // Timer: Add a timer for each player's turn
 // Scoreboard: Display the score and captured pieces
+// Theme Selection: Allow players to choose different board themes
+// Sound Effects: Implement sounds for moves, captures, and background music
+// Replay: Allow players to replay previous games
+// Custom Rules: Allow players to customize game rules
+// Leaderboard: Display the top players and rankings
+
+// Added Features:
+// Highlight Moves: Highlight possible moves for selected pieces
+// Board Rotation: Rotate the board after each turn
+// Piece King: King a piece if it reaches the last row
+// Toggle Rotation: Toggle board rotation on/off
+// Piece Jump: Add logic for jumping over opponent's pieces
+// Piece Capture: Capture opponent's pieces by jumping over them
+// Multiple Captures: Allow multiple captures in a single turn
+// Check Win: Check for a win condition after each move
 
 // Spelregels:
-// 1. Hoekveld linksonder = donker vakje, speel op donkere velden.
 // 2. Wit begint altijd.
 // 3. Schijf: 1 vakje schuin vooruit.
 // 4. Schijf kan vooruit en achteruit slaan.
@@ -69,7 +79,6 @@ function showHighlights() {
             const piece = square.querySelector('.pieceWhite, .pieceBlack');
             if (piece && ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
                 (!isWhiteTurn && piece.classList.contains('pieceBlack')))) {
-
                 piece.style.border = "3px solid red";
                 if (SelectedPiece) SelectedPiece.style.border = "";
                 SelectedPiece = piece;
@@ -92,12 +101,13 @@ function movePiece() {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
-                if (stopRotating === false){
-                    spinBoard();
-                }
+
                 SelectedPiece.style.border = "";
                 SelectedPiece = null;
                 isWhiteTurn = !isWhiteTurn;
+                if (stopRotating === false) {
+                    setTimeout(spinBoard, 0); // Spin the board at the very last
+                }
             }
         }
     });
@@ -107,8 +117,8 @@ movePiece();
 // Jump logic placeholder
 function jumpPiece() {}
 
-// Double jump logic placeholder
-function checkDoubleJump() {}
+// Multi-capture logic placeholder
+function multipleCapture() {}
 
 // Rotates the board for the next turn
 let rotation = 0;
@@ -118,6 +128,12 @@ function spinBoard() {
     Board.style.transition = "transform 1s ease-in-out, filter 1s ease-in-out";
     Board.style.filter = "blur(2px)";
     setTimeout(() => Board.style.filter = "none", 600);
+
+    const kings = document.querySelectorAll('.kingWhite, .kingBlack');
+    kings.forEach(king => {
+        king.style.transform = `rotate(${-rotation}deg)`;
+        king.style.transition = "transform 1s ease-in-out";
+    });
 }
 
 let stopRotating = false;
