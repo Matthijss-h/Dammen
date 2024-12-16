@@ -70,6 +70,17 @@ createBoard();
 
 let isWhiteTurn = true;
 let SelectedPiece = null;
+let rotation = 0;
+let stopRotating = false;
+
+// function to validate a move
+function isMoveValid(fromSquare, toSquare, isWhiteTurn) {
+    const diff = Math.abs(fromSquare - toSquare);
+    const isForwardMove = isWhiteTurn ? fromSquare > toSquare : toSquare > fromSquare;
+
+    // Regular move distances: 9 or 11 (one square diagonal)
+    return (diff === 9 || diff === 11) && isForwardMove;
+}
 
 // Moves the piece to a valid square
 function movePiece() {
@@ -79,8 +90,7 @@ function movePiece() {
             const fromSquare = SelectedPiece.parentElement.id;
             const toSquare = square.id;
 
-            if ((isWhiteTurn && (fromSquare - toSquare == 9 || fromSquare - toSquare == 11)) ||
-                (!isWhiteTurn && (toSquare - fromSquare == 9 || toSquare - fromSquare == 11))) {
+            if (isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
@@ -124,7 +134,6 @@ function jumpPiece() {}
 function multipleCapture() {}
 
 // Rotates the board for the next turn
-let rotation = 0;
 function spinBoard() {
     rotation += 180;
     Board.style.transform = `rotate(${rotation}deg)`;
@@ -139,7 +148,6 @@ function spinBoard() {
     });
 }
 
-let stopRotating = false;
 function toggleBoardRotation() {
     document.getElementById('stopRotate').addEventListener('click', () => {
         stopRotating = !stopRotating;
@@ -154,10 +162,10 @@ toggleBoardRotation();
 
 // Kings a piece if it reaches the last row
 function kingPiece() {
-    if (isWhiteTurn && SelectedPiece.parentElement.id <= 10) {
-        SelectedPiece.classList.add('kingWhite');
-    } else if (!isWhiteTurn && SelectedPiece.parentElement.id >= 90) {
-        SelectedPiece.classList.add('kingBlack');
+    const id = SelectedPiece.parentElement.id;
+    if ((isWhiteTurn && id <= 10) || (!isWhiteTurn && id >= 90)) {
+        SelectedPiece.classList.add(isWhiteTurn ? 'kingWhite' : 'kingBlack');
+        SelectedPiece.style.transform = `rotate(${-rotation}deg)`;
     }
 }
 
