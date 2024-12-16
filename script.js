@@ -71,28 +71,11 @@ createBoard();
 let isWhiteTurn = true;
 let SelectedPiece = null;
 
-// Highlights movable pieces and tracks the selected piece
-function showHighlights() {
-    const darkSquares = document.querySelectorAll('.darkSquare');
-    darkSquares.forEach(square => {
-        square.addEventListener('click', () => {
-            const piece = square.querySelector('.pieceWhite, .pieceBlack');
-            if (piece && ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
-                (!isWhiteTurn && piece.classList.contains('pieceBlack')))) {
-                piece.style.border = "3px solid red";
-                if (SelectedPiece) SelectedPiece.style.border = "";
-                SelectedPiece = piece;
-            }
-        });
-    });
-}
-showHighlights();
-
 // Moves the piece to a valid square
 function movePiece() {
     Board.addEventListener('click', (event) => {
         const square = event.target.closest('.board-square');
-        if (SelectedPiece && square.children.length === 0 && square.classList.contains('darkSquare')) {
+        if (SelectedPiece && square && square.children.length === 0 && square.classList.contains('darkSquare')) {
             const fromSquare = SelectedPiece.parentElement.id;
             const toSquare = square.id;
 
@@ -113,6 +96,26 @@ function movePiece() {
     });
 }
 movePiece();
+
+// Highlights movable pieces and tracks the selected piece
+function showHighlights() {
+    const darkSquares = document.querySelectorAll('.darkSquare');
+    darkSquares.forEach(square => {
+        square.addEventListener('click', () => {
+            const piece = square.querySelector('.pieceWhite, .pieceBlack');
+            if (piece && ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
+                (!isWhiteTurn && piece.classList.contains('pieceBlack')))) {
+                if (SelectedPiece === piece) {
+                    return;
+                }
+                piece.style.border = "3px solid red";
+                if (SelectedPiece) SelectedPiece.style.border = "";
+                SelectedPiece = piece;
+            }
+        });
+    });
+}
+showHighlights();
 
 // Jump logic placeholder
 function jumpPiece() {}
