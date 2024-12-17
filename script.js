@@ -86,10 +86,20 @@ function isMoveValid(fromSquare, toSquare, isWhiteTurn) {
 function movePiece() {
     Board.addEventListener('click', (event) => {
         const square = event.target.closest('.board-square');
+        // Selects the piece
+        if (square && square.children.length > 0) {
+            const piece = square.querySelector('.pieceWhite, .pieceBlack');
+            if ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
+            (!isWhiteTurn && piece.classList.contains('pieceBlack'))) {
+            SelectedPiece = square.firstChild;
+            showHighlights();
+            }
+        } else
+        // Moves the piece to a valid square
         if (SelectedPiece && square && square.children.length === 0 && square.classList.contains('darkSquare')) {
             const fromSquare = SelectedPiece.parentElement.id;
             const toSquare = square.id;
-
+            
             if (isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
                 square.appendChild(SelectedPiece);
                 kingPiece();
@@ -109,23 +119,12 @@ movePiece();
 
 // Highlights movable pieces and tracks the selected piece
 function showHighlights() {
-    const darkSquares = document.querySelectorAll('.darkSquare');
-    darkSquares.forEach(square => {
-        square.addEventListener('click', () => {
-            const piece = square.querySelector('.pieceWhite, .pieceBlack');
-            if (piece && ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
-                (!isWhiteTurn && piece.classList.contains('pieceBlack')))) {
-                if (SelectedPiece === piece) {
-                    return;
-                }
-                piece.style.border = "3px solid red";
-                if (SelectedPiece) SelectedPiece.style.border = "";
-                SelectedPiece = piece;
-            }
-        });
-    });
+    if (SelectedPiece) {
+        SelectedPiece.style.border = "red 3px solid";
+    }else{
+        SelectedPiece.style.border = "";
+    }
 }
-showHighlights();
 
 // Jump logic placeholder
 function jumpPiece() {}
