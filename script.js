@@ -57,7 +57,7 @@ function createBoard() {
             if (row < 4) {
                 const PieceBlack = document.createElement('div');
                 PieceBlack.classList.add('pieceBlack');
-                BoardSquare.appendChild(PieceBlack); 
+                BoardSquare.appendChild(PieceBlack);
             } else if (row > 5) {
                 const PieceWhite = document.createElement('div');
                 PieceWhite.classList.add('pieceWhite');
@@ -76,7 +76,7 @@ let stopRotating = false;
 // function to validate a move
 function isMoveValid(fromSquare, toSquare, isWhiteTurn) {
     const diff = Math.abs(fromSquare - toSquare);
-    const isForwardMove = isWhiteTurn ? fromSquare > toSquare : toSquare > fromSquare;
+    const isForwardMove = isWhiteTurn ? fromSquare > toSquare : fromSquare < toSquare;
 
     // Regular move distances: 9 or 11 (one square diagonal)
     return (diff === 9 || diff === 11) && isForwardMove;
@@ -86,25 +86,29 @@ function isMoveValid(fromSquare, toSquare, isWhiteTurn) {
 function movePiece() {
     Board.addEventListener('click', (event) => {
         const square = event.target.closest('.board-square');
+
         // Selects the piece
         if (square && square.children.length > 0) {
             const piece = square.querySelector('.pieceWhite, .pieceBlack');
-            if ((isWhiteTurn && piece.classList.contains('pieceWhite')) ||
-            (!isWhiteTurn && piece.classList.contains('pieceBlack'))) {
-            SelectedPiece = square.firstChild;
-            showHighlights();
+            if ((isWhiteTurn && piece.classList.contains('pieceWhite')) || 
+                (!isWhiteTurn && piece.classList.contains('pieceBlack'))) {
+                if (SelectedPiece) {
+                    SelectedPiece.style.border = "";
+                }
+                SelectedPiece = square.firstChild;
+                SelectedPiece.style.border = "3px solid red";
             }
-        } else
+        } 
         // Moves the piece to a valid square
-        if (SelectedPiece && square && square.children.length === 0 && square.classList.contains('darkSquare')) {
-            const fromSquare = SelectedPiece.parentElement.id;
-            const toSquare = square.id;
-            
+        else if (SelectedPiece && square && square.children.length === 0 && square.classList.contains('darkSquare')) {
+            const fromSquare = parseInt(SelectedPiece.parentElement.id);
+            const toSquare = parseInt(square.id);
+
             if (isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
-
+                
                 SelectedPiece.style.border = "";
                 SelectedPiece = null;
                 isWhiteTurn = !isWhiteTurn;
@@ -119,11 +123,7 @@ movePiece();
 
 // Highlights movable pieces and tracks the selected piece
 function showHighlights() {
-    if (SelectedPiece) {
-        SelectedPiece.style.border = "red 3px solid";
-    }else{
-        SelectedPiece.style.border = "";
-    }
+
 }
 
 // Jump logic placeholder
