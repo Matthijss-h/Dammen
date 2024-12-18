@@ -104,7 +104,7 @@ function movePiece() {
             const fromSquare = parseInt(SelectedPiece.parentElement.id);
             const toSquare = parseInt(square.id);
 
-            if (isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
+            if (jumpPiece(fromSquare, toSquare, isWhiteTurn) || isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
@@ -112,7 +112,7 @@ function movePiece() {
                 SelectedPiece.style.border = "";
                 SelectedPiece = null;
                 isWhiteTurn = !isWhiteTurn;
-                if (stopRotating === false) {
+                if (!stopRotating) {
                     setTimeout(spinBoard, 0); // Spin the board at the very last
                 }
             }
@@ -127,7 +127,24 @@ function showHighlights() {
 }
 
 // Jump logic placeholder
-function jumpPiece() {}
+function jumpPiece(fromSquare, toSquare, isWhiteTurn) {
+    const diff = Math.abs(fromSquare - toSquare);
+
+    // Check if the move is a jump (18 or 22 squares diagonal)
+    if (diff === 18 || diff === 22) {
+        const middleSquare = (fromSquare + toSquare) / 2;
+        const middlePiece = document.getElementById(middleSquare).firstChild;
+
+        // Check if there is an opponent's piece in the middle square
+        if (middlePiece && ((isWhiteTurn && middlePiece.classList.contains('pieceBlack')) || 
+                            (!isWhiteTurn && middlePiece.classList.contains('pieceWhite')))) {
+            // Remove the opponent's piece
+            middlePiece.remove();
+            return true;
+        }
+    }
+    return false;
+}
 
 // Multi-capture logic placeholder
 function multipleCapture() {}
