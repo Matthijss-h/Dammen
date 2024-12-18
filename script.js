@@ -92,11 +92,7 @@ function movePiece() {
             const piece = square.querySelector('.pieceWhite, .pieceBlack');
             if ((isWhiteTurn && piece.classList.contains('pieceWhite')) || 
                 (!isWhiteTurn && piece.classList.contains('pieceBlack'))) {
-                if (SelectedPiece) {
-                    SelectedPiece.style.border = "";
-                }
-                SelectedPiece = square.firstChild;
-                SelectedPiece.style.border = "3px solid red";
+                showHighlights(square);
             }
         } 
         // Moves the piece to a valid square
@@ -104,7 +100,7 @@ function movePiece() {
             const fromSquare = parseInt(SelectedPiece.parentElement.id);
             const toSquare = parseInt(square.id);
 
-            if (jumpPiece(fromSquare, toSquare, isWhiteTurn) || isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
+            if (canJumpPiece(fromSquare, toSquare, isWhiteTurn) || isMoveValid(fromSquare, toSquare, isWhiteTurn)) {
                 square.appendChild(SelectedPiece);
                 kingPiece();
                 checkForWin();
@@ -122,12 +118,16 @@ function movePiece() {
 movePiece();
 
 // Highlights movable pieces and tracks the selected piece
-function showHighlights() {
-
+function showHighlights(square) {
+    if (SelectedPiece) {
+        SelectedPiece.style.border = "";
+    }
+    SelectedPiece = square.firstChild;
+    SelectedPiece.style.border = "3px solid red";
 }
 
 // Jump logic placeholder
-function jumpPiece(fromSquare, toSquare, isWhiteTurn) {
+function canJumpPiece(fromSquare, toSquare, isWhiteTurn) {
     const diff = Math.abs(fromSquare - toSquare);
 
     // Check if the move is a jump (18 or 22 squares diagonal)
