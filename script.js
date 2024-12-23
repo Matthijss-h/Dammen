@@ -11,16 +11,6 @@
 // Custom Rules: Allow players to customize game rules
 // Leaderboard: Display the top players and rankings
 
-// Added Features:
-// Highlight Moves: Highlight possible moves for selected pieces
-// Board Rotation: Rotate the board after each turn
-// Piece King: King a piece if it reaches the last row
-// Toggle Rotation: Toggle board rotation on/off
-// Piece Jump: Add logic for jumping over opponent's pieces
-// Piece Capture: Capture opponent's pieces by jumping over them
-// Multiple Captures: Allow multiple captures in a single turn
-// Check Win: Check for a win condition after each move
-
 // Spelregels:
 // 2. Wit begint altijd.
 // 3. Schijf: 1 vakje schuin vooruit.
@@ -179,7 +169,7 @@ toggleBoardRotation();
 // Kings a piece if it reaches the last row
 function kingPiece() {
     const id = SelectedPiece.parentElement.id;
-    if ((isWhiteTurn && id <= 10) || (!isWhiteTurn && id >= 90)) {
+    if ((isWhiteTurn && id <= 10) || (!isWhiteTurn && id > 90)) {
         SelectedPiece.classList.add(isWhiteTurn ? 'kingWhite' : 'kingBlack');
         SelectedPiece.style.transform = `rotate(${-rotation}deg)`;
     }
