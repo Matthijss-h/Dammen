@@ -24,42 +24,36 @@ body {
   align-items: center;
 }
 
-.pieceBlack {
+.pieceBlack, .pieceWhite {
   width: 35px;
   height: 35px;
-  background-color: #1C1C1C;
   border-radius: 50%;
   border: black 3px solid;
+}
+
+.pieceBlack {
+  background-color: #1C1C1C;
+}
+
+.pieceWhite {
+  background-color: white;
+}
+
+.kingBlack::before, .kingWhite::before {
+  content: "🜲";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
 }
 
 .kingBlack::before {
-  content: "🜲";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
   color: white;
 }
 
-
-.pieceWhite {
-  width: 35px;
-  height: 35px;
-  background-color: white;
-  border-radius: 50%;
-  border: black 3px solid;
-}
-
 .kingWhite::before {
-  content: "🜲";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
   color: black;
 }
 
