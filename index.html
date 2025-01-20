@@ -9,14 +9,28 @@
 </head>
 
 <body>
+    <div id="start-screen" class="menu-screen">
+        <h1>Welkom bij Dammen</h1>
+        <p>Klik op de knop hieronder om te starten!</p>
+        <button id="start-button">Start het spel</button>
+    </div>
+
     <div class="container">
         <div class="board" id="board">
         </div>
     </div>
+
     <label class="switch">
         <input id="stopRotate" type="checkbox" checked>
         <span class="slider round"></span>
     </label>
+
+    <div id="end-screen" class="menu-screen" style="display: none;">
+        <h1>Game Over</h1>
+        <p>Klik op de knop hieronder om te starten!</p>
+        <button id="start-button">Start het spel</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

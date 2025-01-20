@@ -96,7 +96,7 @@ function movePiece() {
                 checkForWin();
                 
                 SelectedPiece.style.border = "";
-                SelectedPiece = null;
+                SelectedPiece = null;   
                 isWhiteTurn = !isWhiteTurn;
                 if (!stopRotating) {
                     setTimeout(spinBoard, 0); // Spin the board at the very last
@@ -177,9 +177,26 @@ function kingPiece() {
 
 // Checks if one player has won
 function checkForWin() {
-    if (document.getElementsByClassName('pieceBlack').length === 0) {
-        alert("White wins!");
-    } else if (document.getElementsByClassName('pieceWhite').length === 0) {
-        alert("Black wins!");
+    const endScreen = document.getElementById("end-screen");
+    const endTitle = endScreen.querySelector("h1");
+
+    const blackPieces = document.getElementsByClassName('pieceBlack').length;
+    const whitePieces = document.getElementsByClassName('pieceWhite').length;
+
+    if (blackPieces === 0) {
+        endScreen.style.display = "flex";
+        endTitle.innerText = "White wins!";
+    } else if (whitePieces === 0) {
+        endScreen.style.display = "flex";
+        endTitle.innerText = "Black wins!";
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const startScreen = document.getElementById("start-screen");
+    const startButton = startScreen.querySelector("button");
+  
+    startButton.addEventListener("click", () => {
+        startScreen.style.display = "none"; // Hide the start screen
+    });
+});
