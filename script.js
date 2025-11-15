@@ -12,18 +12,18 @@
 // Leaderboard: Display the top players and rankings
 
 // Spelregels:
-// 2. Wit begint altijd.
-// 3. Schijf: 1 vakje schuin vooruit.
-// 4. Schijf kan vooruit en achteruit slaan.
-// 5. Schijf wordt dam bij bereiken overkant, tenzij terug moet slaan.
-// 6. Dam: schuift meerdere vakjes schuin, vooruit/achteruit.
-// 7. Dam kan vooruit/achteruit slaan, hoeft niet direct achter geslagen schijf te staan.
-// 8. Slaan is verplicht.
-// 9. Meerslag (meeste stukken slaan) gaat voor.
-// 10. Bij gelijk aantal slagen (dam/schijf), vrije keuze.
-// 11. Geslagen stukken na slag van bord halen.
-// 12. Geen zet mogelijk = verlies.
-// 13. Niemand kan winnen = remise (ook met ongelijk aantal stukken).
+// 1. Wit begint altijd.
+// 2. Schijf: 1 vakje schuin vooruit.
+// 3. Schijf kan vooruit en achteruit slaan.
+// 4. Schijf wordt dam bij bereiken overkant, tenzij terug moet slaan.
+// 5. Dam: schuift meerdere vakjes schuin, vooruit/achteruit.
+// 6. Dam kan vooruit/achteruit slaan, hoeft niet direct achter geslagen schijf te staan.
+// 7. Slaan is verplicht.
+// 8. Meerslag (meeste stukken slaan) gaat voor.
+// 9. Bij gelijk aantal slagen (dam/schijf), vrije keuze.
+// 10. Geslagen stukken na slag van bord halen.
+// 11. Geen zet mogelijk = verlies.
+// 12. Niemand kan winnen = remise (ook met ongelijk aantal stukken).
 
 const Board = document.getElementById('board');
 
@@ -198,5 +198,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
     startButton.addEventListener("click", () => {
         startScreen.style.display = "none"; // Hide the start screen
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const endScreen = document.getElementById("end-screen");
+    const endButton = endScreen.querySelector("button");
+  
+    endButton.addEventListener("click", () => {
+        location.reload(); // Reload the page
     });
 });
